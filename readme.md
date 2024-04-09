@@ -16,7 +16,7 @@ Para utilizar este contenedor de desarrollo en tu propio repositorio, sigue esto
 1. Clona este repositorio:
 
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/42-Madrid-Fundacion-Telefonica/42_linux_devcontainer.git
     ```
 
 2. Copia la carpeta `.devcontainer` a la raíz de tu repositorio de proyecto.
@@ -35,7 +35,7 @@ Para utilizar este contenedor de desarrollo en tu propio repositorio, sigue esto
 
 ## Retroalimentación
 
-Si encuentras algún problema o tienes sugerencias para mejorar, por favor [abre un issue](<link-to-issues-page>) en este repositorio.
+Si encuentras algún problema o tienes sugerencias para mejorar, por favor [abre un issue](https://github.com/42-Madrid-Fundacion-Telefonica/42_linux_devcontainer/issues) en este repositorio.
 
 ¡A pasarlo bien programando!
 
