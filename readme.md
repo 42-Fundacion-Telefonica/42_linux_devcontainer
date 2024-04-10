@@ -7,7 +7,55 @@ Este repositorio contiene una carpeta `.devcontainer` que te permite configurar 
 Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema:
 
 - [Visual Studio Code](https://code.visualstudio.com/)
-- [Docker](https://www.docker.com/products/docker-desktop)
+- [Docker](https://www.docker.com/products/docker-desktop) o [Podman](https://podman.io/)
+
+## Antes de empezar SOLO para usuarios de Podman
+
+Un poco de preparación es necesaria para engañar a VSCode para usar Podman en lugar de Docker. Puedes usar este pequeño script (copiar/pegar en tu terminal) para hacerlo:
+```shell
+#!/bin/bash
+
+# Create a local bin directory
+echo "Creating ~/bin directory if it doesn't exist..."
+mkdir -p ~/bin
+
+# Navigate to the directory
+cd ~/bin
+
+# Create a Docker wrapper script for Podman
+echo "Creating Docker wrapper script for Podman..."
+cat > docker << EOF
+#!/bin/bash
+podman "\$@"
+EOF
+
+# Make the script executable
+chmod +x docker
+echo "Docker wrapper script created."
+
+# Add the local bin directory to your PATH
+SHELL_PROFILE=""
+if [ -n "$ZSH_VERSION" ]; then
+   SHELL_PROFILE="$HOME/.zshrc"
+elif [ -n "$BASH_VERSION" ]; then
+   SHELL_PROFILE="$HOME/.bash_profile"
+fi
+
+if [ -n "$SHELL_PROFILE" ]; then
+    if ! grep -q 'export PATH=~/bin:$PATH' "$SHELL_PROFILE"; then
+        echo "Adding ~/bin to your PATH in $SHELL_PROFILE..."
+        echo 'export PATH=~/bin:$PATH' >> "$SHELL_PROFILE"
+        source $SHELL_PROFILE
+        echo "Path added and sourced\!"
+    else
+        echo "~/bin is already in your PATH."
+    fi
+else
+    echo "Could not determine shell profile file."
+fi
+```
+
+**WARNING:** Este script hará que todos los futuros comandos docker utilicen podman en lugar de docker. Para deshacerlo, simplemente ejecute `rm -f ~/bin/docker` y todo volverá a la normalidad.
 
 ## Empezar
 
@@ -50,7 +98,55 @@ This repository contains a `.devcontainer` folder which allows you to set up a d
 Before you begin, make sure you have the following installed on your system:
 
 - [Visual Studio Code](https://code.visualstudio.com/)
-- [Docker](https://www.docker.com/products/docker-desktop)
+- [Docker](https://www.docker.com/products/docker-desktop) or [Podman](https://podman.io/) 
+
+## Before Starting for Podman users ONLY
+
+A little bit of preparation is necessary to trick VSCode to use Podman in place of Docker. You can use this little script (copy/paste it in your terminal) to do it:
+```shell
+#!/bin/bash
+
+# Create a local bin directory
+echo "Creating ~/bin directory if it doesn't exist..."
+mkdir -p ~/bin
+
+# Navigate to the directory
+cd ~/bin
+
+# Create a Docker wrapper script for Podman
+echo "Creating Docker wrapper script for Podman..."
+cat > docker << EOF
+#!/bin/bash
+podman "\$@"
+EOF
+
+# Make the script executable
+chmod +x docker
+echo "Docker wrapper script created."
+
+# Add the local bin directory to your PATH
+SHELL_PROFILE=""
+if [ -n "$ZSH_VERSION" ]; then
+   SHELL_PROFILE="$HOME/.zshrc"
+elif [ -n "$BASH_VERSION" ]; then
+   SHELL_PROFILE="$HOME/.bash_profile"
+fi
+
+if [ -n "$SHELL_PROFILE" ]; then
+    if ! grep -q 'export PATH=~/bin:$PATH' "$SHELL_PROFILE"; then
+        echo "Adding ~/bin to your PATH in $SHELL_PROFILE..."
+        echo 'export PATH=~/bin:$PATH' >> "$SHELL_PROFILE"
+        source $SHELL_PROFILE
+        echo "Path added and sourced\!"
+    else
+        echo "~/bin is already in your PATH."
+    fi
+else
+    echo "Could not determine shell profile file."
+fi
+```
+
+**WARNING:** This script will cause every futur docker commands to use podman in place of docker. To undo it, simply run `rm -f ~/bin/docker` and everything will go back to normal.
 
 ## Getting Started
 
